@@ -6,6 +6,9 @@ jQuery(document).ready(function($){
     var height = 20;
     var spacechar = "░"; //░
     var snakechar = "█"; //█
+    var wallchar = "▓"; //▓
+    var pathchar = "▒"; //▒
+    var snake_length = 10;
     //populates the grid with empty space
     function givespace(){
         for(down=0;down<height;down++){
@@ -22,6 +25,21 @@ jQuery(document).ready(function($){
         }
     }
 
+    function add_border(){
+        for(let i=0;i<grid.length;i++){
+            grid[i][0] = wallchar;
+            grid[i][29] = wallchar;
+            function longways_wall(){
+                for(let horizontal=0;horizontal<29;horizontal++){
+                    grid[0][horizontal] = wallchar;
+                    grid[19][horizontal] = wallchar;
+                }
+            }
+            longways_wall();
+        }
+    }
+    add_border();
+
     function replacegrid(){
         $('#box').empty();
         for(i=0;i<grid.length;i++){
@@ -34,24 +52,43 @@ jQuery(document).ready(function($){
     snake_y = 10;
     snake_dir = "right";
     function addsnake(x,y){
-        // console.log(grid);
         grid[y][x] = snakechar;
         replacegrid();
         // console.log('griddone');
     }
-
+    
+    console.log(grid);
     var goners = [
 
     ]
 
+    function add_apple(){
+        apple_x = Math.floor((Math.random() * width) + 0);
+        apple_y = Math.floor((Math.random() * height) + 0);
+        if(grid[apple_y][apple_x] == "░"){
+            grid[apple_y][apple_x] = "@";
+            console.log(apple_x+" , "+apple_y);
+        }else{
+            add_apple();
+        }
+    }
+    add_apple();
+
     showgrid();
     function movement(){
-        function move(){
-            setInterval(function(){
+            var timing = setInterval(function(){
                 goners.push([snake_x,snake_y]);
                 console.log(goners.length);
                 // console.log(snake_x+" first "+snake_y);
-                if(snake_x < 30 && snake_x >= 0 && snake_y < 20 && snake_y >= 0){
+                if(snake_x==apple_x && snake_y==apple_y){
+                    snake_length = snake_length+3;
+                    add_apple();
+                }
+                if(grid[snake_y][snake_x] == snakechar){
+                    gameover();
+                    clearInterval(timing);
+                }
+                if(snake_x < 29 && snake_x >= 1 && snake_y < 19 && snake_y >= 1){
                     if(snake_dir == "right"){
                         addsnake(snake_x++,snake_y);
                     }
@@ -65,36 +102,38 @@ jQuery(document).ready(function($){
                         addsnake(snake_x--,snake_y);
                     }
                 } else {
-                    $('#box').append("game over ");
+                    gameover();
+                    clearInterval(timing);
+                    console.log("oops");
                 }
-
                 // console.log(snake_x+" second "+snake_y)
-                grid[goners[0][1]][goners[0][0]] = "o";
-                if(goners.length == 5){
+                grid[goners[0][1]][goners[0][0]] = "▒";
+                if(goners.length == snake_length){
                     goners.shift();
 
                 }
             }, 100);
         }
-        move();
-    }
-    movement();
-
+        movement();
+        function gameover(){
+            $('#fail').append("game over ");
+        }
+        
     $(document).off('keyup');
     $(document).on('keydown', function(event) {
-        if (event.keyCode == 37) {
+        if (event.keyCode == 37 && snake_dir !== "right") {
             snake_dir = "left";
             console.log(snake_dir);
         }
-        if (event.keyCode == 38) {
+        if (event.keyCode == 38 && snake_dir !== "down") {
             snake_dir = "up";
             console.log(snake_dir);
         }
-        if (event.keyCode == 39) {
+        if (event.keyCode == 39 && snake_dir !== "left") {
             snake_dir = "right";
             console.log(snake_dir);
         }
-        if (event.keyCode == 40) {
+        if (event.keyCode == 40 && snake_dir !== "up") {
             snake_dir = "down";
             console.log(snake_dir);
         }
