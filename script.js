@@ -81,6 +81,10 @@ jQuery(document).ready(function($){
                 console.log(goners.length);
                 // console.log(snake_x+" first "+snake_y);
                 if(snake_x==apple_x && snake_y==apple_y){
+                    var audio  = new Audio();
+                    file = "sounds/apple.mp3";
+                    audio.src = file;
+                    audio.play();
                     snake_length = snake_length+3;
                     add_apple();
                 }
@@ -117,9 +121,13 @@ jQuery(document).ready(function($){
         movement();
         function gameover(){
             $('#fail').append("game over ");
+            var audio  = new Audio();
+            file = "sounds/fail.mp3";
+            audio.src = file;
+            audio.play();
         }
         
-    $(document).off('keyup');
+    // $(document).off('keyup');
     $(document).on('keydown', function(event) {
         if (event.keyCode == 37 && snake_dir !== "right") {
             snake_dir = "left";
