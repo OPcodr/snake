@@ -4,10 +4,11 @@ jQuery(document).ready(function($){
     
     var width = 30;
     var height = 20;
-    var spacechar = "░"; //░
-    var snakechar = "█"; //█
-    var wallchar = "▓"; //▓
-    var pathchar = "▒"; //▒
+    var applechar = "<span class='apple'>@</span>";
+    var spacechar = "<span class='space'>░</span>"; //░
+    var snakechar = "<span class='snake'>█</span>"; //█
+    var wallchar = "<span class='wall'>▓</span>"; //▓
+    var pathchar = "<span class='path'>▒</span>"; //▒
     var snake_length = 10;
     //populates the grid with empty space
     function givespace(){
@@ -65,8 +66,8 @@ jQuery(document).ready(function($){
     function add_apple(){
         apple_x = Math.floor((Math.random() * width) + 0);
         apple_y = Math.floor((Math.random() * height) + 0);
-        if(grid[apple_y][apple_x] == "░"){
-            grid[apple_y][apple_x] = "@";
+        if(grid[apple_y][apple_x] == spacechar){
+            grid[apple_y][apple_x] = applechar;
             console.log(apple_x+" , "+apple_y);
         }else{
             add_apple();
@@ -111,7 +112,7 @@ jQuery(document).ready(function($){
                     console.log("oops");
                 }
                 // console.log(snake_x+" second "+snake_y)
-                grid[goners[0][1]][goners[0][0]] = "▒";
+                grid[goners[0][1]][goners[0][0]] = pathchar;
                 if(goners.length == snake_length){
                     goners.shift();
 

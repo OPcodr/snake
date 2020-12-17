@@ -1,3 +1,32 @@
 div{
     font-family: "Courier New", monospace;
 }
+
+span{
+    font-size: 1.7em;
+}
+
+span.snake{
+    background-color: rgb(0, 225, 255);
+    color: rgb(0, 153, 255);
+}
+span.space{
+    background-color: rgb(38, 219, 14);
+    color:green;
+}
+span.path{
+    background-color: rgb(36, 206, 13);
+    color:green;
+}
+span.wall{
+    background-color: grey;
+    color: rgb(24, 22, 22);
+}
+span.apple{
+    background-color: rgb(38, 219, 14);
+    color: red;
+    font-weight: 900;
+}
+/* span.{
+    background-color: ;
+} */
